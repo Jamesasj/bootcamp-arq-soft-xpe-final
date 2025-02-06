@@ -3,10 +3,11 @@ import { ProductService } from './product.service';
 import { ProductController } from './product.controller';
 import { Product } from './entities/product.entity';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ProductRepository } from './product.repository';
 
 @Module({
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductRepository, ProductService],
   imports: [SequelizeModule.forFeature([Product])],
 })
 export class ProductModule {}

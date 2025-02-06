@@ -1,31 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from './entities/product.entity';
-import { InjectModel } from '@nestjs/sequelize';
+import { ProductRepository } from './product.repository';
+import { ProductModel } from './entities/product.model';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    @InjectModel(Product)
-    private productRepository: typeof Product,
-  ) {}
+  constructor(private readonly repo: ProductRepository) {}
 
-  create(createProductDto: CreateProductDto) {
-    const newProduct = { ...createProductDto };
-    return this.productRepository.create(newProduct);
+  async create(createProductDto: CreateProductDto): Promise<ProductModel> {
+    const newProduct: ProductModel = { ...createProductDto };
+    return await this.repo.create(newProduct);
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll() {
+    return await this.repo.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    return await this.repo.findOne(id);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, productData: Partial<ProductModel>) {
+    return await this.repo.update(id, productData);
   }
 
   remove(id: number) {
