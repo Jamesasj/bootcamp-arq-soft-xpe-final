@@ -100,3 +100,30 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 
 ## Helps
 - [nest with sequelize](https://medium.com/@mikess_dev/creating-a-nest-js-project-with-sequelize-and-sqlite-870d29908a8c)
+
+
+
+---
+title: System Context diagram for Product System
+---
+C4Context
+  Enterprise_Boundary(b0, "Product System") {
+    Person(user, "User", "Interacts with the system")
+
+    System_Boundary(b1, "Product Service Boundary") {
+      Container(controller, "ProductController", "NestJS", "Handles HTTP requests")
+      Container(service, "ProductService", "NestJS", "Business logic")
+      ContainerDb(repository, "ProductRepository", "Sequelize", "Database operations")
+    }
+  }
+
+  Rel(user, controller, "Uses API")
+  Rel(controller, service, "Calls business logic")
+  Rel(service, repository, "Queries database")
+
+  UpdateElementStyle(user, $fontColor="black", $bgColor="#D5E8D4", $borderColor="black")
+  UpdateElementStyle(controller, $bgColor="#A5C6E8")
+  UpdateElementStyle(service, $bgColor="#A5C6E8")
+  UpdateElementStyle(repository, $bgColor="#F3C583")
+
+  UpdateLayoutConfig($c4ShapeInRow="2")
