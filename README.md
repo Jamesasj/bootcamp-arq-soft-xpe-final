@@ -102,7 +102,7 @@ Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
 - [nest with sequelize](https://medium.com/@mikess_dev/creating-a-nest-js-project-with-sequelize-and-sqlite-870d29908a8c)
 
 
-
+```mermaid
 ---
 title: System Context diagram for Product System
 ---
@@ -127,3 +127,4 @@ C4Context
   UpdateElementStyle(repository, $bgColor="#F3C583")
 
   UpdateLayoutConfig($c4ShapeInRow="2")
+```
