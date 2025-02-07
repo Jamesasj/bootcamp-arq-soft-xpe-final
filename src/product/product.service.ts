@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductRepository } from './product.repository';
 import { ProductModel } from './entities/product.model';
 
@@ -21,11 +20,19 @@ export class ProductService {
     return await this.repo.findOne(id);
   }
 
+  async findByName(name: string) {
+    return await this.repo.findByName(name);
+  }
+
   async update(id: number, productData: Partial<ProductModel>) {
     return await this.repo.update(id, productData);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: number) {
+    await this.repo.remove(id);
+  }
+
+  async count() {
+    return await this.repo.count();
   }
 }

@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './entities/product.entity';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProductModel } from './entities/product.model';
+import { where } from 'sequelize';
 
 @Injectable()
 export class ProductRepository {
@@ -15,10 +16,19 @@ export class ProductRepository {
   async findAll() {
     return await this.repo.findAll();
   }
+
   async findOne(id: number): Promise<Product> {
     const product = await this.repo.findOne({ where: { id } });
     if (!product) {
       throw new NotFoundException(`Produto com ID ${id} não encontrado`);
+    }
+    return product;
+  }
+
+  async findByName(name: string): Promise<Product> {
+    const product = await this.repo.findOne({ where: { nome: name } });
+    if (!product) {
+      throw new NotFoundException(`Produto com Name ${name} não encontrado`);
     }
     return product;
   }
@@ -35,5 +45,9 @@ export class ProductRepository {
   async remove(id: number): Promise<void> {
     const product = await this.findOne(id);
     await product.destroy();
+  }
+
+  async count(): Promise<number> {
+    return await this.repo.count();
   }
 }
