@@ -1,34 +1,71 @@
 # 1. Solução
-As funcionalidades deverão ser disponibilizadas através de API RESTful.
+As funcionalidades foram disponibilizadas através de API RESTful.
 
+## Documentacao de API
+
+A API foi documentada com swagger disponel em [localhost:3000/api](http://localhost:3000/api)
+
+## Stack
+
+Nest.js - https://docs.nestjs.com/
+
+Sequeliza - https://sequelize.org/docs/v6/
+
+SQLite - https://sequelize.org/docs/v7/databases/sqlite/
 
 
 # 2. Desenho arquitetural do software
+
+## 2.1 C4 Nivel 1
 ```mermaid
 ---
-title: System Context diagram for Product System
+title: System Context diagram for Marketplace System
 ---
 C4Context
-  Enterprise_Boundary(b0, "Product System") {
-    Person(user, "User", "Interacts with the system")
+  Enterprise_Boundary(b0, "Marketplace System") {
+    Person(user, "User", "Interacts with the Marketplace system")
+    Person(staff, "Staff", "Interacts with the Backoffice system")
 
-    System_Boundary(b1, "Product Service Boundary") {
-      Container(controller, "ProductController", "NestJS", "Handles HTTP requests")
-      Container(service, "ProductService", "NestJS", "Business logic")
-      ContainerDb(repository, "ProductRepository", "Sequelize", "Database operations")
-    }
+    Container(mrktsys, "Web App Marketpalce System", "NextJS", "Allow users to purchase products")
+    Container(bkosys, "Web App Backoffice System", "NextJS", "Allows staff controll resources <br> of marcketplace")
+    Container(prodService, "Marketplace Service", "NestJS", "Store all of core Marketplace information")
   }
 
-  Rel(user, controller, "Uses API")
-  Rel(controller, service, "Calls business logic")
-  Rel(service, repository, "Queries database")
+  Rel(user, mrktsys, "Uses")
+  Rel(staff, bkosys, "Uses")
+  Rel(bkosys, prodService, "Uses")
+  Rel(mrktsys, prodService, "Uses")
 
-  UpdateElementStyle(user, $fontColor="black", $bgColor="#D5E8D4", $borderColor="black")
-  UpdateElementStyle(controller, $bgColor="#A5C6E8")
-  UpdateElementStyle(service, $bgColor="#A5C6E8")
-  UpdateElementStyle(repository, $bgColor="#F3C583")
+  UpdateElementStyle(prodService, $bgColor="#A5C6E8")
 
   UpdateLayoutConfig($c4ShapeInRow="2")
+```
+
+## 2.1 C4 Nivel 2
+```mermaid
+---
+title: Container Diagram for Product System
+---
+C4Container
+  Enterprise_Boundary(b0, "Marketplace System") {
+    Person(user, "User", "Interacts with the Marketplace system")
+
+    Container(mrktsys, "Web App Marketpalce System", "NextJS", "Allow users to purchase products")
+
+
+    System_Boundary(b1, "Web App Marketpalce System") {
+      Container(productApi, "Product API", "NestJS", "Handles HTTP requests and business logic")
+      SystemDb_Ext(SystemE, "Database", "Stores all products <br> information.")
+    }
+  }
+  Rel(user, mrktsys, "Uses")
+  Rel(mrktsys, productApi, "Uses", "HTTP/Json")
+  Rel(productApi, SystemE, "reads from and <br> writes to", "jdbc")
+
+  UpdateElementStyle(mrktsys, $bgColor="#A5C6E8", $offsetX="-100")
+
+  UpdateLayoutConfig($c4ShapeInRow="2")
+
 ```
 
 # 3. Estrutura de Pastas
@@ -53,20 +90,16 @@ C4Context
 ```
 
 # 4. Explicação dos componentes
-## product.model.ts 
-Define a estrutura da entidade Product.
 
-## product.controller.ts  
-Controlador que recebe e processa requisições HTTP.
+- product.model - Define a estrutura da entidade Product.
 
-## product.service.ts 
-Contém a lógica de negócio e orquestra chamadas ao repositório.
+- product.controller - Controlador que recebe e processa requisições HTTP.
 
-## product.repository.ts
-Responsável por interagir com o banco de dados.
+- product.service - Contém a lógica de negócio e orquestra chamadas ao repositório.
 
-## dto/
-Armazena os Data Transfer Objects (DTOs) para validação de entrada de dados no controller.
+- product.repository - Responsável por interagir com o banco de dados.
+
+- dto/ - Armazena os Data Transfer Objects (DTOs) para validação de entrada de dados no controller.
 
 # 5. Entrega do Código
 
@@ -74,13 +107,18 @@ O codigo esta disponivelno [Github](https://github.com/Jamesasj/bootcamp-arq-sof
 
 # 6. Project setup
 
+O servico e executado em [localhost:3000/api](http://localhost:3000/api)
+
+- Resolver dependencias do projeto
+
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+- Executar o projeto
 
 ```bash
 # production mode
 $ npm run start:prod
 ```
+
