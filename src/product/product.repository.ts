@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './entities/product.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { ProductModel } from './entities/product.model';
-import { where } from 'sequelize';
+import { ProductModel } from './product.model';
 
 @Injectable()
 export class ProductRepository {
