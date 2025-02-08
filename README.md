@@ -60,9 +60,8 @@ C4Container
   }
   Rel(user, mrktsys, "Uses")
   Rel(mrktsys, productApi, "Uses", "HTTP/Json")
-  Rel(productApi, SystemE, "reads from and <br> writes to", "jdbc")
+  Rel(productApi, SystemE, "reads from and <br> writes to", "Sequelize ")
 
-  UpdateElementStyle(mrktsys, $bgColor="#A5C6E8", $offsetX="-100")
 
   UpdateLayoutConfig($c4ShapeInRow="2")
 
